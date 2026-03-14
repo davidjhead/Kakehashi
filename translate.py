@@ -1,3 +1,4 @@
+import re
 import pyaudio
 import numpy as np
 import threading
@@ -221,9 +222,17 @@ def main():
         result = mlx_whisper.transcribe(audio, **kwargs)
         return result.get("text", "").strip(), result.get("language", "")
 
+    _CHARS_PER_LINE = 72   # estimated characters per visual line at default window width
+    _MAX_BLOCK_LINES = 8  # force a new block after this many visual lines
+
     def _emit(tag: str, english: str, kanji, ts: str, speaker, speaker_tag: str, same_speaker: bool):
         """Append to or start a speaker block, then print."""
         block_lang = "en" if tag == "EN" else "ja"
+        # Force a new block when the current one has reached the line limit
+        if same_speaker and _block["lang"] == block_lang:
+            est_lines = (len(_block["en"]) + _CHARS_PER_LINE - 1) // _CHARS_PER_LINE
+            if est_lines >= _MAX_BLOCK_LINES:
+                same_speaker = False
         if same_speaker and _block["lang"] == block_lang:
             _block["en"] += " " + english
             if kanji:
@@ -247,6 +256,20 @@ def main():
             '\u4e00' <= c <= '\u9fff'      # CJK ideographs
             for c in text
         )
+
+    # Common Whisper sound-effect hallucinations to strip from output
+    _HALLUCINATION_TOKENS = re.compile(
+        r'[\(\[]('
+        r'Laughter|Applause|Music|Silence|Noise|Crowd|Cheering|Clapping|'
+        r'Background noise|Inaudible|Crosstalk|Indistinct|Static|Beep|'
+        r'♪[^♪]*♪|♫[^♫]*♫'
+        r')[\)\]]',
+        re.IGNORECASE
+    )
+
+    def _clean(text: str) -> str:
+        """Strip hallucinated sound-effect tokens and tidy whitespace."""
+        return re.sub(r'\s+', ' ', _HALLUCINATION_TOKENS.sub('', text)).strip()
 
     def _is_hallucination(text: str) -> bool:
         """Detect Whisper repetition hallucinations (e.g. 'come come come...')."""
@@ -272,6 +295,7 @@ def main():
 
         # Transcribe to detect language and get source text
         transcript, detected = _run(audio, task="transcribe")
+        transcript = _clean(transcript)
         if not transcript or _is_hallucination(transcript):
             return
 
@@ -283,7 +307,7 @@ def main():
 
         if is_japanese:
             kanji = transcript if show_orig else None
-            english = _translate_ja(transcript)
+            english = _clean(_translate_ja(transcript))
             if not english:
                 return
             _emit("JP", english, kanji, ts, speaker, speaker_tag, same_speaker)

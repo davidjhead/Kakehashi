@@ -1,0 +1,28 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -project /Users/headd/zoom-translate/ZoomTranslateApp/ZoomTranslateApp.xcodeproj -scheme ZoomTranslateApp -configuration Debug build CODE_SIGN_IDENTITY=\"-\" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO 2>&1 | grep -E \"error:|warning:|BUILD SUCCEEDED|BUILD FAILED\")",
+      "Bash(open /Users/headd/zoom-translate/ZoomTranslateApp/ZoomTranslateApp.xcodeproj)",
+      "Bash(/Users/headd/zoom-translate/bin/pip install:*)",
+      "Bash(DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -project /Users/headd/zoom-translate/ZoomTranslateApp/ZoomTranslateApp.xcodeproj -scheme ZoomTranslateApp -configuration Debug build CODE_SIGN_IDENTITY=\"-\" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO 2>&1 | tail -2 && pkill -f ZoomTranslateApp 2>/dev/null; sleep 1; open \"/Users/headd/Library/Developer/Xcode/DerivedData/ZoomTranslateApp-ahceemhzoooarmcqhoypujhcuboe/Build/Products/Debug/ZoomTranslateApp.app\")",
+      "Bash(DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer /Applications/Xcode.app/Contents/Developer/usr/bin/xcodebuild -project /Users/headd/zoom-translate/ZoomTranslateApp/ZoomTranslateApp.xcodeproj -scheme ZoomTranslateApp -configuration Debug build CODE_SIGN_IDENTITY=\"-\" CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO 2>&1 | grep -E \"error:|BUILD SUCCEEDED|BUILD FAILED\")",
+      "Bash(pkill -f ZoomTranslateApp 2>/dev/null; sleep 1; open \"/Users/headd/Library/Developer/Xcode/DerivedData/ZoomTranslateApp-ahceemhzoooarmcqhoypujhcuboe/Build/Products/Debug/ZoomTranslateApp.app\")",
+      "Bash(~/zoom-translate/bin/python -c \"import inspect; from pyannote.audio import Model; print\\(inspect.signature\\(Model.from_pretrained\\)\\)\")",
+      "Bash(~/zoom-translate/bin/pip install:*)",
+      "Bash(cd /Users/headd/zoom-translate/ZoomTranslateApp && xcodebuild -scheme ZoomTranslateApp -configuration Debug build 2>&1 | grep -E \"error:|warning:|BUILD\")",
+      "Bash(sudo xcode-select:*)",
+      "Bash(DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer xcodebuild -project /Users/headd/zoom-translate/ZoomTranslateApp/ZoomTranslateApp.xcodeproj -scheme ZoomTranslateApp -configuration Debug build 2>&1 | grep -E \"error:|warning:|BUILD\")",
+      "Bash(bin/pip install:*)",
+      "Bash(bin/pip show:*)",
+      "Bash(bin/pip index:*)",
+      "Bash(bin/pip list:*)",
+      "Bash(system_profiler SPSoftwareDataType)",
+      "Bash(python3 -c \"import pyaudio; p = pyaudio.PyAudio\\(\\); [print\\(p.get_device_info_by_index\\(i\\)['name']\\) for i in range\\(p.get_device_count\\(\\)\\)]\" 2>/dev/null)",
+      "Bash(ICON=/Users/headd/Downloads/files/zoom-translate-icon.png\nDEST=/Users/headd/zoom-translate/ZoomTranslateApp/ZoomTranslateApp/Assets.xcassets/AppIcon.appiconset\n\nsips -z 16 16     \"$ICON\" --out \"$DEST/icon_16x16.png\"\nsips -z 32 32     \"$ICON\" --out \"$DEST/icon_16x16@2x.png\"\nsips -z 32 32     \"$ICON\" --out \"$DEST/icon_32x32.png\"\nsips -z 64 64     \"$ICON\" --out \"$DEST/icon_32x32@2x.png\"\nsips -z 128 128   \"$ICON\" --out \"$DEST/icon_128x128.png\"\nsips -z 256 256   \"$ICON\" --out \"$DEST/icon_128x128@2x.png\"\nsips -z 256 256   \"$ICON\" --out \"$DEST/icon_256x256.png\"\nsips -z 512 512   \"$ICON\" --out \"$DEST/icon_256x256@2x.png\"\nsips -z 512 512   \"$ICON\" --out \"$DEST/icon_512x512.png\"\nsips -z 1024 1024 \"$ICON\" --out \"$DEST/icon_512x512@2x.png\"\necho \"Done\")",
+      "Bash(git add:*)",
+      "Bash(killall Dock 2>/dev/null; echo \"Dock restarted\")",
+      "Bash(killall Dock 2>/dev/null; echo \"done\")",
+      "Bash(cp -R \"/Users/headd/Library/Developer/Xcode/DerivedData/ZoomTranslateApp-ahceemhzoooarmcqhoypujhcuboe/Build/Products/Debug/ZoomTranslateApp.app\" /Applications/ && echo \"Copied to /Applications\")"
+    ]
+  }
+}

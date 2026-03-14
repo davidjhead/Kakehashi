@@ -1,24 +1,108 @@
 import SwiftUI
 import AppKit
 
+// MARK: - Custom NSTextView with right-click Copy Block
+
+private class TranslationNSTextView: NSTextView {
+    /// Lines array kept in sync by the representable so the menu handler can use it.
+    var currentLines: [String] = []
+
+    override func menu(for event: NSEvent) -> NSMenu? {
+        let menu = super.menu(for: event) ?? NSMenu()
+
+        // Find the character index under the right-click point
+        let pt = convert(event.locationInWindow, from: nil)
+        guard let layout = layoutManager, let container = textContainer else { return menu }
+        let charIdx = layout.characterIndex(for: pt, in: container,
+                                             fractionOfDistanceBetweenInsertionPoints: nil)
+
+        // Walk the full attributed string to find which line range contains charIdx
+        guard let storage = textStorage else { return menu }
+        let full = storage.string as NSString
+        var blockStart = charIdx
+        var blockEnd   = charIdx
+
+        // Walk backward to find the start of the block (line beginning with "[")
+        var lineRange = NSRange(location: 0, length: 0)
+        full.getLineStart(nil, end: nil, contentsEnd: nil, for: NSRange(location: charIdx, length: 0))
+        var search = charIdx
+        while search > 0 {
+            full.getLineStart(&lineRange.location, end: nil, contentsEnd: nil,
+                              for: NSRange(location: search, length: 0))
+            let lineStr = full.substring(with: NSRange(location: lineRange.location,
+                                                        length: min(1, full.length - lineRange.location)))
+            if lineStr == "[" { blockStart = lineRange.location; break }
+            if search == lineRange.location { break }
+            search = max(0, lineRange.location - 1)
+        }
+
+        // Walk forward to find the blank line that ends the block
+        blockEnd = charIdx
+        var fwdPos = charIdx
+        while fwdPos < full.length {
+            var end = 0, contentsEnd = 0
+            full.getLineStart(nil, end: &end, contentsEnd: &contentsEnd,
+                              for: NSRange(location: fwdPos, length: 0))
+            let lineContent = full.substring(with: NSRange(location: fwdPos,
+                                                            length: contentsEnd - fwdPos))
+            blockEnd = end
+            if lineContent.trimmingCharacters(in: .whitespaces).isEmpty && fwdPos != charIdx { break }
+            if end == fwdPos { break }
+            fwdPos = end
+        }
+
+        let blockText = full.substring(with: NSRange(location: blockStart,
+                                                      length: blockEnd - blockStart))
+                             .trimmingCharacters(in: .whitespacesAndNewlines)
+
+        if !blockText.isEmpty {
+            let item = NSMenuItem(title: "Copy Block", action: #selector(copyBlock(_:)),
+                                  keyEquivalent: "")
+            item.representedObject = blockText
+            item.target = self
+            menu.insertItem(item, at: 0)
+            menu.insertItem(.separator(), at: 1)
+        }
+        return menu
+    }
+
+    @objc private func copyBlock(_ sender: NSMenuItem) {
+        guard let text = sender.representedObject as? String else { return }
+        NSPasteboard.general.clearContents()
+        NSPasteboard.general.setString(text, forType: .string)
+    }
+}
+
 struct TranslationTextView: NSViewRepresentable {
     let lines: [String]
     let speakerNames: [String: String]
 
     func makeNSView(context: Context) -> NSScrollView {
-        let scrollView = NSTextView.scrollableTextView()
-        guard let textView = scrollView.documentView as? NSTextView else { return scrollView }
+        let scrollView = NSScrollView()
+        scrollView.hasVerticalScroller = true
+        scrollView.autohidesScrollers = true
+
+        let textView = TranslationNSTextView()
         textView.isEditable = false
         textView.isSelectable = true
         textView.backgroundColor = NSColor.textBackgroundColor
         textView.textContainerInset = NSSize(width: 12, height: 12)
         textView.isAutomaticLinkDetectionEnabled = false
         textView.isAutomaticDataDetectionEnabled = false
+        textView.isVerticallyResizable = true
+        textView.isHorizontallyResizable = false
+        textView.autoresizingMask = [.width]
+        textView.textContainer?.widthTracksTextView = true
+        textView.textContainer?.containerSize = NSSize(width: CGFloat.greatestFiniteMagnitude,
+                                                        height: CGFloat.greatestFiniteMagnitude)
+
+        scrollView.documentView = textView
         return scrollView
     }
 
     func updateNSView(_ scrollView: NSScrollView, context: Context) {
-        guard let textView = scrollView.documentView as? NSTextView else { return }
+        guard let textView = scrollView.documentView as? TranslationNSTextView else { return }
+        textView.currentLines = lines
 
         let docHeight = scrollView.documentView?.bounds.height ?? 0
         let visibleMaxY = scrollView.contentView.bounds.maxY

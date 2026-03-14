@@ -39,7 +39,9 @@ class TranslationViewModel: ObservableObject {
 
     // MARK: - Clipboard helpers
 
-    var fullText: String { translations.joined(separator: "\n") }
+    var fullText: String {
+        translations.map { $0.isEmpty ? "" : $0 }.joined(separator: "\n")
+    }
 
     func copyAll() { copy(fullText) }
     func copyLine(_ line: String) { copy(line) }
@@ -177,7 +179,14 @@ class TranslationViewModel: ObservableObject {
 
     private func handleLine(_ raw: String) {
         let line = raw.trimmingCharacters(in: .whitespacesAndNewlines)
-        guard !line.isEmpty else { return }
+        // Preserve empty lines as block separators (needed for clean copy/paste),
+        // but only if the last line wasn't already empty
+        if line.isEmpty {
+            if translations.last?.isEmpty == false {
+                translations.append("")
+            }
+            return
+        }
         guard !line.hasPrefix("objc[") else { return }
         guard !line.hasPrefix("---") else { return }
         guard !line.contains("Detected language:") else { return }
