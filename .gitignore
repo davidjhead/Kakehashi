@@ -2,7 +2,11 @@
 bin/
 lib/
 include/
+share/
 pyvenv.cfg
+
+# Claude Code settings
+.claude/
 
 # Python cache
 __pycache__/
