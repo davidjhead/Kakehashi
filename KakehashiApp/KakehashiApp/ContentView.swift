@@ -262,20 +262,28 @@ private struct AudioLevelBar: View {
                 .foregroundStyle(.secondary)
             GeometryReader { geo in
                 ZStack(alignment: .leading) {
+                    // Track
                     RoundedRectangle(cornerRadius: 2)
-                        .fill(Color.gray.opacity(0.15))
-                    RoundedRectangle(cornerRadius: 2)
-                        .fill(barColor)
-                        .frame(width: geo.size.width * fill)
-                        .animation(.linear(duration: 0.15), value: fill)
+                        .fill(Color.gray.opacity(0.25))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 2)
+                                .stroke(Color.gray.opacity(0.4), lineWidth: 0.5)
+                        )
+                    // Fill
+                    if fill > 0 {
+                        RoundedRectangle(cornerRadius: 2)
+                            .fill(barColor)
+                            .frame(width: max(4, geo.size.width * fill))
+                            .animation(.linear(duration: 0.15), value: fill)
+                    }
                     // Threshold marker
                     Rectangle()
-                        .fill(Color.red.opacity(0.7))
-                        .frame(width: 1.5)
-                        .offset(x: geo.size.width * thresholdPos)
+                        .fill(Color.red.opacity(0.8))
+                        .frame(width: 2)
+                        .offset(x: geo.size.width * thresholdPos - 1)
                 }
             }
-            .frame(width: 80, height: 8)
+            .frame(width: 100, height: 10)
             Text(level > 0 ? String(format: "%.4f", level) : "—")
                 .font(.system(.caption, design: .monospaced))
                 .foregroundStyle(.secondary)

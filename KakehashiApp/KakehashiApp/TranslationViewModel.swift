@@ -186,7 +186,8 @@ class TranslationViewModel: ObservableObject {
 
         if debugMode {
             if !line.isEmpty { translations.append(line) }
-            return
+            if !line.hasPrefix("[STATUS]") { return }
+            // fall through to process STATUS messages even in debug mode
         }
 
         // Preserve empty lines as block separators (needed for clean copy/paste),
