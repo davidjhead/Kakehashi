@@ -229,6 +229,10 @@ class TranslationViewModel: ObservableObject {
                 }
             case payload.hasPrefix("processing_backlog:"):
                 isProcessingBacklog = true
+            case payload.hasPrefix("capture_error:"):
+                let msg = "[Audio Error] " + payload.dropFirst("capture_error:".count)
+                translations.append(msg)
+                audioFlowing = false
             case payload.hasPrefix("level:"):
                 if let val = Double(payload.dropFirst("level:".count)) {
                     audioLevel = val
