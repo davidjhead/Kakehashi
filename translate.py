@@ -391,9 +391,17 @@ def main():
         print(f"Capturing audio via {device_name} …")
         print("[STATUS] audio:flowing")
         buffer = []
+        level_buf = []
+        LEVEL_INTERVAL = int(SAMPLE_RATE * 0.5)   # emit level every 0.5 s
         while not shutdown_event.is_set():
             data = stream.read(1024, exception_on_overflow=False)
-            buffer.append(np.frombuffer(data, dtype=np.float32))
+            chunk = np.frombuffer(data, dtype=np.float32)
+            buffer.append(chunk)
+            level_buf.append(chunk)
+            if sum(len(b) for b in level_buf) >= LEVEL_INTERVAL:
+                level = float(np.abs(np.concatenate(level_buf)).mean())
+                print(f"[STATUS] level:{level:.6f}")
+                level_buf = []
             if sum(len(b) for b in buffer) >= _chunk_frames[0]:
                 audio_queue.put(np.concatenate(buffer))
                 buffer = []

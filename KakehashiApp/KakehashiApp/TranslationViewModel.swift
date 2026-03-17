@@ -15,8 +15,10 @@ class TranslationViewModel: ObservableObject {
     @Published var blackholeDetected = false
     @Published var audioFlowing = false
     @Published var isDropping = false
+    @Published var audioLevel: Double = 0.0
 
     private var dropTimer: Timer?
+    private var levelDecayTimer: Timer?
 
     // MARK: - Settings (disabled while running)
 
@@ -74,6 +76,7 @@ class TranslationViewModel: ObservableObject {
         audioFlowing      = false
         isDropping        = false
         isProcessingBacklog = false
+        audioLevel        = 0.0
 
         let home   = NSHomeDirectory()
         let python = "\(home)/kakehashi/bin/python"
@@ -225,6 +228,14 @@ class TranslationViewModel: ObservableObject {
                 }
             case payload.hasPrefix("processing_backlog:"):
                 isProcessingBacklog = true
+            case payload.hasPrefix("level:"):
+                if let val = Double(payload.dropFirst("level:".count)) {
+                    audioLevel = val
+                    levelDecayTimer?.invalidate()
+                    levelDecayTimer = Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false) { [weak self] _ in
+                        self?.audioLevel = 0.0
+                    }
+                }
             default:
                 break
             }

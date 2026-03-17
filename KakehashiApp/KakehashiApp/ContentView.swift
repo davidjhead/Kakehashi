@@ -33,6 +33,7 @@ struct ContentView: View {
                 value: vm.audioFlowing ? "Flowing" : "Idle",
                 on: vm.audioFlowing
             )
+            AudioLevelBar(level: vm.audioLevel, threshold: vm.threshold)
             Spacer()
             Button {
                 vm.translations.removeAll()
@@ -232,6 +233,54 @@ private struct DroppingToast: View {
         .padding(.vertical, 8)
         .background(.regularMaterial, in: Capsule())
         .shadow(radius: 4)
+    }
+}
+
+// MARK: - Audio level bar
+
+private struct AudioLevelBar: View {
+    let level: Double
+    let threshold: Double
+
+    // Map amplitude to 0…1 on a log scale (0.0001 → 0, 0.1 → 0.75, 1.0 → 1.0)
+    private func normalized(_ val: Double) -> Double {
+        let clamped = max(0.000001, val)
+        return min(1.0, max(0.0, (log10(clamped) + 4.0) / 4.0))
+    }
+
+    private var fill: Double { normalized(level) }
+    private var thresholdPos: Double { normalized(threshold) }
+
+    private var barColor: Color {
+        level == 0 ? .gray.opacity(0.3) : (level >= threshold ? .green : .orange)
+    }
+
+    var body: some View {
+        HStack(spacing: 5) {
+            Text("Level:")
+                .font(.caption)
+                .foregroundStyle(.secondary)
+            GeometryReader { geo in
+                ZStack(alignment: .leading) {
+                    RoundedRectangle(cornerRadius: 2)
+                        .fill(Color.gray.opacity(0.15))
+                    RoundedRectangle(cornerRadius: 2)
+                        .fill(barColor)
+                        .frame(width: geo.size.width * fill)
+                        .animation(.linear(duration: 0.15), value: fill)
+                    // Threshold marker
+                    Rectangle()
+                        .fill(Color.red.opacity(0.7))
+                        .frame(width: 1.5)
+                        .offset(x: geo.size.width * thresholdPos)
+                }
+            }
+            .frame(width: 80, height: 8)
+            Text(level > 0 ? String(format: "%.4f", level) : "—")
+                .font(.system(.caption, design: .monospaced))
+                .foregroundStyle(.secondary)
+                .frame(width: 52, alignment: .leading)
+        }
     }
 }
 
