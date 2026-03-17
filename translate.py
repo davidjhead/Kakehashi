@@ -70,18 +70,14 @@ def main():
 
     # ── Translation models (MarianMT, CPU, offline) ───────────────────────────
 
-    import torch
     import transformers
     transformers.logging.set_verbosity_error()
     from transformers import MarianMTModel, MarianTokenizer
 
-    _mt_device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
-    print(f"Translation model device: {_mt_device}")
-
     def _load_mt(model_id: str):
         print(f"Loading translation model ({model_id}) …")
         tok = MarianTokenizer.from_pretrained(model_id)
-        mdl = MarianMTModel.from_pretrained(model_id).to(_mt_device)
+        mdl = MarianMTModel.from_pretrained(model_id)
         return tok, mdl
 
     def _translate(text: str, tokenizer, model) -> str:
@@ -89,7 +85,6 @@ def main():
             return ""
         inputs = tokenizer([text], return_tensors="pt", padding=True,
                            truncation=True, max_length=512)
-        inputs = {k: v.to(_mt_device) for k, v in inputs.items()}
         ids = model.generate(**inputs)
         return tokenizer.decode(ids[0], skip_special_tokens=True)
 
