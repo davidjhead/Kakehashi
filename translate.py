@@ -391,17 +391,10 @@ def main():
         print(f"Capturing audio via {device_name} …")
         print("[STATUS] audio:flowing")
         buffer = []
-        level_buf = []
-        LEVEL_INTERVAL = int(SAMPLE_RATE * 0.5)   # emit level every 0.5 s
         while not shutdown_event.is_set():
             data = stream.read(1024, exception_on_overflow=False)
             chunk = np.frombuffer(data, dtype=np.float32)
             buffer.append(chunk)
-            level_buf.append(chunk)
-            if sum(len(b) for b in level_buf) >= LEVEL_INTERVAL:
-                level = float(np.abs(np.concatenate(level_buf)).mean())
-                print(f"[STATUS] level:{level:.6f}")
-                level_buf = []
             if sum(len(b) for b in buffer) >= _chunk_frames[0]:
                 audio_queue.put(np.concatenate(buffer))
                 buffer = []
@@ -431,7 +424,9 @@ def main():
             if dropped:
                 print(f"[STATUS] dropping:{dropped}")
 
-            if np.abs(audio).mean() < _silence_threshold[0]:
+            level_val = float(np.abs(audio).mean())
+            print(f"[STATUS] level:{level_val:.6f}")
+            if level_val < _silence_threshold[0]:
                 continue
 
             transcribe_and_print(audio, time.strftime("%H:%M:%S"))
