@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
     <key>CFBundleDisplayName</key>
-    <string>Zoom Translate</string>
+    <string>Kakehashi</string>
     <key>CFBundleExecutable</key>
     <string>$(EXECUTABLE_NAME)</string>
     <key>CFBundleIdentifier</key>
@@ -29,6 +29,6 @@
     <key>NSHumanReadableCopyright</key>
     <string></string>
     <key>NSMicrophoneUsageDescription</key>
-    <string>Zoom Translate captures audio from virtual audio devices (BlackHole / ZoomAudioDevice) to transcribe and translate meeting audio in real time.</string>
+    <string>Kakehashi captures audio from virtual audio devices (BlackHole / ZoomAudioDevice) to transcribe and translate meeting audio in real time.</string>
 </dict>
 </plist>

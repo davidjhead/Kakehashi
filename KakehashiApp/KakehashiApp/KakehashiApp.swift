@@ -2,7 +2,7 @@ import SwiftUI
 import AVFoundation
 
 @main
-struct ZoomTranslateApp: App {
+struct KakehashiApp: App {
     @StateObject private var store = TranscriptStore()
 
     init() {
@@ -14,7 +14,7 @@ struct ZoomTranslateApp: App {
     }
 
     var body: some Scene {
-        WindowGroup("Zoom Translate") {
+        WindowGroup("Kakehashi") {
             ContentView()
                 .environmentObject(store)
         }

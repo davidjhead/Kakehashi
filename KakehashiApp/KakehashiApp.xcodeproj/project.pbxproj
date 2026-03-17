@@ -11,7 +11,7 @@
 		3643615E2F640AFA000E0FB8 /* HistoryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3643615A2F640AFA000E0FB8 /* HistoryView.swift */; };
 		3643615F2F640AFA000E0FB8 /* Transcript.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3643615B2F640AFA000E0FB8 /* Transcript.swift */; };
 		364361612F640BC0000E0FB8 /* TranslationTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 364361602F640BC0000E0FB8 /* TranslationTextView.swift */; };
-		AA00000A000000000000AA0A /* ZoomTranslateApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000005000000000000AA05 /* ZoomTranslateApp.swift */; };
+		AA00000A000000000000AA0A /* KakehashiApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000005000000000000AA05 /* KakehashiApp.swift */; };
 		AA00000B000000000000AA0B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000006000000000000AA06 /* ContentView.swift */; };
 		AA00000C000000000000AA0C /* TranslationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = AA000007000000000000AA07 /* TranslationViewModel.swift */; };
 		AA000017000000000000AA17 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AA000018000000000000AA18 /* Assets.xcassets */; };
@@ -22,11 +22,11 @@
 		3643615B2F640AFA000E0FB8 /* Transcript.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transcript.swift; sourceTree = "<group>"; };
 		3643615C2F640AFA000E0FB8 /* TranscriptStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranscriptStore.swift; sourceTree = "<group>"; };
 		364361602F640BC0000E0FB8 /* TranslationTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslationTextView.swift; sourceTree = "<group>"; };
-		AA000005000000000000AA05 /* ZoomTranslateApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZoomTranslateApp.swift; sourceTree = "<group>"; };
+		AA000005000000000000AA05 /* KakehashiApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KakehashiApp.swift; sourceTree = "<group>"; };
 		AA000006000000000000AA06 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		AA000007000000000000AA07 /* TranslationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TranslationViewModel.swift; sourceTree = "<group>"; };
 		AA000008000000000000AA08 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		AA000009000000000000AA09 /* ZoomTranslateApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZoomTranslateApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA000009000000000000AA09 /* KakehashiApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = KakehashiApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AA000018000000000000AA18 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -44,31 +44,31 @@
 		AA000002000000000000AA02 = {
 			isa = PBXGroup;
 			children = (
-				AA000003000000000000AA03 /* ZoomTranslateApp */,
+				AA000003000000000000AA03 /* KakehashiApp */,
 				AA000004000000000000AA04 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		AA000003000000000000AA03 /* ZoomTranslateApp */ = {
+		AA000003000000000000AA03 /* KakehashiApp */ = {
 			isa = PBXGroup;
 			children = (
 				364361602F640BC0000E0FB8 /* TranslationTextView.swift */,
 				3643615A2F640AFA000E0FB8 /* HistoryView.swift */,
 				3643615B2F640AFA000E0FB8 /* Transcript.swift */,
 				3643615C2F640AFA000E0FB8 /* TranscriptStore.swift */,
-				AA000005000000000000AA05 /* ZoomTranslateApp.swift */,
+				AA000005000000000000AA05 /* KakehashiApp.swift */,
 				AA000006000000000000AA06 /* ContentView.swift */,
 				AA000007000000000000AA07 /* TranslationViewModel.swift */,
 				AA000008000000000000AA08 /* Info.plist */,
 				AA000018000000000000AA18 /* Assets.xcassets */,
 			);
-			path = ZoomTranslateApp;
+			path = KakehashiApp;
 			sourceTree = "<group>";
 		};
 		AA000004000000000000AA04 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				AA000009000000000000AA09 /* ZoomTranslateApp.app */,
+				AA000009000000000000AA09 /* KakehashiApp.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -76,9 +76,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		AA000010000000000000AA10 /* ZoomTranslateApp */ = {
+		AA000010000000000000AA10 /* KakehashiApp */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = AA000012000000000000AA12 /* Build configuration list for PBXNativeTarget "ZoomTranslateApp" */;
+			buildConfigurationList = AA000012000000000000AA12 /* Build configuration list for PBXNativeTarget "KakehashiApp" */;
 			buildPhases = (
 				AA00000D000000000000AA0D /* Sources */,
 				AA00000F000000000000AA0F /* Frameworks */,
@@ -88,9 +88,9 @@
 			);
 			dependencies = (
 			);
-			name = ZoomTranslateApp;
-			productName = ZoomTranslateApp;
-			productReference = AA000009000000000000AA09 /* ZoomTranslateApp.app */;
+			name = KakehashiApp;
+			productName = KakehashiApp;
+			productReference = AA000009000000000000AA09 /* KakehashiApp.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -108,7 +108,7 @@
 					};
 				};
 			};
-			buildConfigurationList = AA000011000000000000AA11 /* Build configuration list for PBXProject "ZoomTranslateApp" */;
+			buildConfigurationList = AA000011000000000000AA11 /* Build configuration list for PBXProject "KakehashiApp" */;
 			compatibilityVersion = "Xcode 14.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -121,7 +121,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				AA000010000000000000AA10 /* ZoomTranslateApp */,
+				AA000010000000000000AA10 /* KakehashiApp */,
 			);
 		};
 /* End PBXProject section */
@@ -142,7 +142,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AA00000A000000000000AA0A /* ZoomTranslateApp.swift in Sources */,
+				AA00000A000000000000AA0A /* KakehashiApp.swift in Sources */,
 				364361612F640BC0000E0FB8 /* TranslationTextView.swift in Sources */,
 				AA00000B000000000000AA0B /* ContentView.swift in Sources */,
 				3643615D2F640AFA000E0FB8 /* TranscriptStore.swift in Sources */,
@@ -284,7 +284,7 @@
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = ZoomTranslateApp/Info.plist;
+				INFOPLIST_FILE = KakehashiApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -292,7 +292,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.zoomtranslate.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kakehashi.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -309,7 +309,7 @@
 				ENABLE_APP_SANDBOX = NO;
 				ENABLE_HARDENED_RUNTIME = YES;
 				GENERATE_INFOPLIST_FILE = NO;
-				INFOPLIST_FILE = ZoomTranslateApp/Info.plist;
+				INFOPLIST_FILE = KakehashiApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -317,7 +317,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				MACOSX_DEPLOYMENT_TARGET = 13.0;
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.zoomtranslate.app;
+				PRODUCT_BUNDLE_IDENTIFIER = com.kakehashi.app;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -327,7 +327,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		AA000011000000000000AA11 /* Build configuration list for PBXProject "ZoomTranslateApp" */ = {
+		AA000011000000000000AA11 /* Build configuration list for PBXProject "KakehashiApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				AA000013000000000000AA13 /* Debug */,
@@ -336,7 +336,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		AA000012000000000000AA12 /* Build configuration list for PBXNativeTarget "ZoomTranslateApp" */ = {
+		AA000012000000000000AA12 /* Build configuration list for PBXNativeTarget "KakehashiApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				AA000015000000000000AA15 /* Debug */,

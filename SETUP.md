@@ -1,4 +1,4 @@
-# Zoom Translate — Setup Guide
+# Kakehashi — Setup Guide
 
 ## Requirements
 
@@ -50,7 +50,7 @@ brew install python@3.11
 
 ### Create a virtual environment in the project directory
 ```bash
-cd ~/zoom-translate
+cd ~/kakehashi
 python3.11 -m venv .
 ```
 
@@ -114,7 +114,7 @@ Speaker diarization identifies who is speaking (Speaker A, Speaker B, etc.).
 ## 5. Build & Run the App
 
 ```bash
-cd ~/zoom-translate/ZoomTranslateApp
+cd ~/kakehashi/ZoomTranslateApp
 open ZoomTranslateApp.xcodeproj
 ```
 
@@ -135,8 +135,8 @@ open ZoomTranslateApp.xcodeproj
 - Ensure you have an internet connection on first launch for model downloads
 
 **Python not found / launch error**
-- Verify the venv exists: `ls ~/zoom-translate/bin/python`
-- The app expects Python at `~/zoom-translate/bin/python`
+- Verify the venv exists: `ls ~/kakehashi/bin/python`
+- The app expects Python at `~/kakehashi/bin/python`
 
 **Speaker tracking unavailable**
 - Confirm your HF token is entered before clicking Start

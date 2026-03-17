@@ -8,7 +8,7 @@ class TranscriptStore: ObservableObject {
 
     init() {
         let dir = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)[0]
-            .appendingPathComponent("ZoomTranslate")
+            .appendingPathComponent("Kakehashi")
         try? FileManager.default.createDirectory(at: dir, withIntermediateDirectories: true)
         dataURL = dir.appendingPathComponent("transcripts.json")
         load()

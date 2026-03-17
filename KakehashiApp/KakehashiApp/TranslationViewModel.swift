@@ -75,8 +75,8 @@ class TranslationViewModel: ObservableObject {
         isProcessingBacklog = false
 
         let home   = NSHomeDirectory()
-        let python = "\(home)/zoom-translate/bin/python"
-        let script = "\(home)/zoom-translate/translate.py"
+        let python = "\(home)/kakehashi/bin/python"
+        let script = "\(home)/kakehashi/translate.py"
 
         let proc = Process()
         proc.executableURL = URL(fileURLWithPath: python)

@@ -1,2 +1,2 @@
-# zoom-translate
-MacOS Japanese to to English Audio to text translation.
+# Kakehashi
+MacOS real-time meeting audio transcription and translation app.
