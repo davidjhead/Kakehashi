@@ -68,24 +68,40 @@ def main():
 
     print(f"Model ready.  threshold={args.threshold}  chunk={args.chunk_size}s")
 
-    # ── Japanese → English translation model (MarianMT) ──────────────────────
+    # ── Translation models (MarianMT, CPU, offline) ───────────────────────────
 
-    print("Loading translation model (Helsinki-NLP/opus-mt-ja-en) …")
+    import torch
     import transformers
     transformers.logging.set_verbosity_error()
     from transformers import MarianMTModel, MarianTokenizer
-    _mt_tokenizer = MarianTokenizer.from_pretrained("Helsinki-NLP/opus-mt-ja-en")
-    _mt_model     = MarianMTModel.from_pretrained("Helsinki-NLP/opus-mt-ja-en")
-    print("Translation model ready.")
 
-    def _translate_ja(text: str) -> str:
-        """Translate Japanese text to English via MarianMT (CPU, offline)."""
+    _mt_device = torch.device("mps" if torch.backends.mps.is_available() else "cpu")
+    print(f"Translation model device: {_mt_device}")
+
+    def _load_mt(model_id: str):
+        print(f"Loading translation model ({model_id}) …")
+        tok = MarianTokenizer.from_pretrained(model_id)
+        mdl = MarianMTModel.from_pretrained(model_id).to(_mt_device)
+        return tok, mdl
+
+    def _translate(text: str, tokenizer, model) -> str:
         if not text:
             return ""
-        inputs = _mt_tokenizer([text], return_tensors="pt", padding=True,
-                                truncation=True, max_length=512)
-        ids = _mt_model.generate(**inputs)
-        return _mt_tokenizer.decode(ids[0], skip_special_tokens=True)
+        inputs = tokenizer([text], return_tensors="pt", padding=True,
+                           truncation=True, max_length=512)
+        inputs = {k: v.to(_mt_device) for k, v in inputs.items()}
+        ids = model.generate(**inputs)
+        return tokenizer.decode(ids[0], skip_special_tokens=True)
+
+    _ja_tok, _ja_mdl = _load_mt("Helsinki-NLP/opus-mt-ja-en")
+    _ko_tok, _ko_mdl = _load_mt("Helsinki-NLP/opus-mt-ko-en")
+    print("Translation models ready.")
+
+    def _translate_ja(text: str) -> str:
+        return _translate(text, _ja_tok, _ja_mdl)
+
+    def _translate_ko(text: str) -> str:
+        return _translate(text, _ko_tok, _ko_mdl)
 
     # ── Speaker tracking (optional) ───────────────────────────────────────────
 
@@ -227,7 +243,7 @@ def main():
 
     def _emit(tag: str, english: str, kanji, ts: str, speaker, speaker_tag: str, same_speaker: bool):
         """Append to or start a speaker block, then print."""
-        block_lang = "en" if tag == "EN" else "ja"
+        block_lang = "en" if tag == "EN" else tag.lower()  # "ja" or "ko"
         # Force a new block when the current one has reached the line limit
         if same_speaker and _block["lang"] == block_lang:
             est_lines = (len(_block["en"]) + _CHARS_PER_LINE - 1) // _CHARS_PER_LINE
@@ -254,6 +270,14 @@ def main():
         return any(
             '\u3040' <= c <= '\u30ff' or  # hiragana / katakana
             '\u4e00' <= c <= '\u9fff'      # CJK ideographs
+            for c in text
+        )
+
+    def _has_korean(text: str) -> bool:
+        return any(
+            '\uac00' <= c <= '\ud7af' or  # hangul syllables
+            '\u1100' <= c <= '\u11ff' or  # hangul jamo
+            '\u3130' <= c <= '\u318f'      # hangul compatibility jamo
             for c in text
         )
 
@@ -304,13 +328,24 @@ def main():
             or "japanese" in detected.lower()
             or _has_japanese(transcript)
         )
+        is_korean = (
+            detected.startswith("ko")
+            or "korean" in detected.lower()
+            or _has_korean(transcript)
+        )
 
         if is_japanese:
-            kanji = transcript if show_orig else None
+            orig = transcript if show_orig else None
             english = _clean(_translate_ja(transcript))
             if not english:
                 return
-            _emit("JP", english, kanji, ts, speaker, speaker_tag, same_speaker)
+            _emit("JP", english, orig, ts, speaker, speaker_tag, same_speaker)
+        elif is_korean:
+            orig = transcript if show_orig else None
+            english = _clean(_translate_ko(transcript))
+            if not english:
+                return
+            _emit("KO", english, orig, ts, speaker, speaker_tag, same_speaker)
         else:
             _emit("EN", transcript, None, ts, speaker, speaker_tag, same_speaker)
 

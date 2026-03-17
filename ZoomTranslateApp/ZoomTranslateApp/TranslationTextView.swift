@@ -161,10 +161,11 @@ struct TranslationTextView: NSViewRepresentable {
                 .font: NSFont.monospacedSystemFont(ofSize: NSFont.systemFontSize, weight: .regular),
                 .foregroundColor: NSColor.labelColor
             ])
-            // Color EN:/JP: tag
+            // Color EN:/JP:/KO: tag
             let isEN = displayLine.contains("] EN:")
-            let tag = isEN ? "EN:" : "JP:"
-            let tagColor: NSColor = isEN ? .systemBlue : .systemOrange
+            let isKO = displayLine.contains("] KO:")
+            let tag = isEN ? "EN:" : isKO ? "KO:" : "JP:"
+            let tagColor: NSColor = isEN ? .systemBlue : isKO ? .systemGreen : .systemOrange
             if let range = displayLine.range(of: tag) {
                 attrStr.addAttribute(.foregroundColor, value: tagColor, range: NSRange(range, in: displayLine))
             }
