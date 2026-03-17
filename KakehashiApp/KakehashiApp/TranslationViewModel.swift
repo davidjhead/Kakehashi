@@ -29,6 +29,7 @@ class TranslationViewModel: ObservableObject {
 
     @Published var speakerThreshold: Double = 0.65
     @Published var showOriginalText: Bool = true
+    @Published var debugMode: Bool = false
 
     // MARK: - Speaker names
 
@@ -179,6 +180,12 @@ class TranslationViewModel: ObservableObject {
 
     private func handleLine(_ raw: String) {
         let line = raw.trimmingCharacters(in: .whitespacesAndNewlines)
+
+        if debugMode {
+            if !line.isEmpty { translations.append(line) }
+            return
+        }
+
         // Preserve empty lines as block separators (needed for clean copy/paste),
         // but only if the last line wasn't already empty
         if line.isEmpty {

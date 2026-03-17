@@ -131,9 +131,12 @@ struct ContentView: View {
                 .keyboardShortcut(vm.isRunning ? .escape : .return, modifiers: [])
             }
 
-            // Row 2: Show original
+            // Row 2: Show original + Debug
             HStack {
                 Spacer()
+                Toggle("Debug (raw output)", isOn: $vm.debugMode)
+                    .foregroundStyle(vm.debugMode ? .orange : .secondary)
+                Spacer().frame(width: 16)
                 Toggle("Show original text", isOn: $vm.showOriginalText)
                     .onChange(of: vm.showOriginalText) { _ in vm.sendShowOriginal() }
             }
