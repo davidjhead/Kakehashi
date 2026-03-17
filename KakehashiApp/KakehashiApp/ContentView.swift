@@ -255,35 +255,36 @@ private struct AudioLevelBar: View {
         level == 0 ? .gray.opacity(0.3) : (level >= threshold ? .green : .orange)
     }
 
+    private let barWidth: Double = 100
+
     var body: some View {
         HStack(spacing: 5) {
             Text("Level:")
                 .font(.caption)
                 .foregroundStyle(.secondary)
-            GeometryReader { geo in
-                ZStack(alignment: .leading) {
-                    // Track
-                    RoundedRectangle(cornerRadius: 2)
-                        .fill(Color.gray.opacity(0.25))
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 2)
-                                .stroke(Color.gray.opacity(0.4), lineWidth: 0.5)
-                        )
+            // Track
+            RoundedRectangle(cornerRadius: 2)
+                .fill(Color.gray.opacity(0.25))
+                .frame(width: barWidth, height: 10)
+                .overlay(alignment: .leading) {
                     // Fill
-                    if fill > 0 {
-                        RoundedRectangle(cornerRadius: 2)
-                            .fill(barColor)
-                            .frame(width: max(4, geo.size.width * fill))
-                            .animation(.linear(duration: 0.15), value: fill)
-                    }
+                    RoundedRectangle(cornerRadius: 2)
+                        .fill(barColor)
+                        .frame(width: fill > 0 ? max(4, barWidth * fill) : 0, height: 10)
+                        .animation(.linear(duration: 0.15), value: fill)
+                }
+                .overlay(alignment: .leading) {
                     // Threshold marker
                     Rectangle()
-                        .fill(Color.red.opacity(0.8))
-                        .frame(width: 2)
-                        .offset(x: geo.size.width * thresholdPos - 1)
+                        .fill(Color.red.opacity(0.9))
+                        .frame(width: 2, height: 10)
+                        .offset(x: barWidth * thresholdPos - 1)
                 }
-            }
-            .frame(width: 100, height: 10)
+                .clipShape(RoundedRectangle(cornerRadius: 2))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 2)
+                        .stroke(Color.gray.opacity(0.4), lineWidth: 0.5)
+                )
             Text(level > 0 ? String(format: "%.4f", level) : "—")
                 .font(.system(.caption, design: .monospaced))
                 .foregroundStyle(.secondary)
